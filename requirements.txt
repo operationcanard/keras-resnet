@@ -1,3 +1,4 @@
 pytest
+ipdb
 
 tensorflow-gpu==2.3.0
