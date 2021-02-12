@@ -7,10 +7,11 @@ keras_resnet.models._2d
 This module implements popular two-dimensional residual models.
 """
 
-import keras.backend
-import keras.layers
-import keras.models
-import keras.regularizers
+import tensorflow.keras as keras
+import tensorflow.keras.backend
+import tensorflow.keras.layers
+import tensorflow.keras.models
+import tensorflow.keras.regularizers
 
 import keras_resnet.blocks
 import keras_resnet.layers
@@ -43,7 +44,7 @@ def ResNet(inputs, blocks, block, include_top=True, classes=1000, freeze_bn=True
 
         >>> shape, classes = (224, 224, 3), 1000
 
-        >>> x = keras.layers.Input(shape)
+        >>> x = tensorflow.keras.layers.Input(shape)
 
         >>> blocks = [2, 2, 2, 2]
 
@@ -53,7 +54,7 @@ def ResNet(inputs, blocks, block, include_top=True, classes=1000, freeze_bn=True
 
         >>> model.compile("adam", "categorical_crossentropy", ["accuracy"])
     """
-    if keras.backend.image_data_format() == "channels_last":
+    if tensorflow.keras.backend.image_data_format() == "channels_last":
         axis = 3
     else:
         axis = 1
@@ -61,11 +62,11 @@ def ResNet(inputs, blocks, block, include_top=True, classes=1000, freeze_bn=True
     if numerical_names is None:
         numerical_names = [True] * len(blocks)
 
-    x = keras.layers.ZeroPadding2D(padding=3, name="padding_conv1")(inputs)
-    x = keras.layers.Conv2D(64, (7, 7), strides=(2, 2), use_bias=False, name="conv1")(x)
+    x = tensorflow.keras.layers.ZeroPadding2D(padding=3, name="padding_conv1")(inputs)
+    x = tensorflow.keras.layers.Conv2D(64, (7, 7), strides=(2, 2), use_bias=False, name="conv1")(x)
     x = keras_resnet.layers.BatchNormalization(axis=axis, epsilon=1e-5, freeze=freeze_bn, name="bn_conv1")(x)
-    x = keras.layers.Activation("relu", name="conv1_relu")(x)
-    x = keras.layers.MaxPooling2D((3, 3), strides=(2, 2), padding="same", name="pool1")(x)
+    x = tensorflow.keras.layers.Activation("relu", name="conv1_relu")(x)
+    x = tensorflow.keras.layers.MaxPooling2D((3, 3), strides=(2, 2), padding="same", name="pool1")(x)
 
     features = 64
 
@@ -82,13 +83,13 @@ def ResNet(inputs, blocks, block, include_top=True, classes=1000, freeze_bn=True
     if include_top:
         assert classes > 0
 
-        x = keras.layers.GlobalAveragePooling2D(name="pool5")(x)
-        x = keras.layers.Dense(classes, activation="softmax", name="fc1000")(x)
+        x = tensorflow.keras.layers.GlobalAveragePooling2D(name="pool5")(x)
+        x = tensorflow.keras.layers.Dense(classes, activation="softmax", name="fc1000")(x)
 
-        return keras.models.Model(inputs=inputs, outputs=x, *args, **kwargs)
+        return tensorflow.keras.models.Model(inputs=inputs, outputs=x, *args, **kwargs)
     else:
         # Else output each stages features
-        return keras.models.Model(inputs=inputs, outputs=outputs, *args, **kwargs)
+        return tensorflow.keras.models.Model(inputs=inputs, outputs=outputs, *args, **kwargs)
 
 
 def ResNet18(inputs, blocks=None, include_top=True, classes=1000, *args, **kwargs):
@@ -111,7 +112,7 @@ def ResNet18(inputs, blocks=None, include_top=True, classes=1000, *args, **kwarg
 
         >>> shape, classes = (224, 224, 3), 1000
 
-        >>> x = keras.layers.Input(shape)
+        >>> x = tensorflow.keras.layers.Input(shape)
 
         >>> model = keras_resnet.models.ResNet18(x, classes=classes)
 
@@ -143,7 +144,7 @@ def ResNet34(inputs, blocks=None, include_top=True, classes=1000, *args, **kwarg
 
         >>> shape, classes = (224, 224, 3), 1000
 
-        >>> x = keras.layers.Input(shape)
+        >>> x = tensorflow.keras.layers.Input(shape)
 
         >>> model = keras_resnet.models.ResNet34(x, classes=classes)
 
@@ -175,7 +176,7 @@ def ResNet50(inputs, blocks=None, include_top=True, classes=1000, *args, **kwarg
 
         >>> shape, classes = (224, 224, 3), 1000
 
-        >>> x = keras.layers.Input(shape)
+        >>> x = tensorflow.keras.layers.Input(shape)
 
         >>> model = keras_resnet.models.ResNet50(x)
 
@@ -208,7 +209,7 @@ def ResNet101(inputs, blocks=None, include_top=True, classes=1000, *args, **kwar
 
         >>> shape, classes = (224, 224, 3), 1000
 
-        >>> x = keras.layers.Input(shape)
+        >>> x = tensorflow.keras.layers.Input(shape)
 
         >>> model = keras_resnet.models.ResNet101(x, classes=classes)
 
@@ -241,7 +242,7 @@ def ResNet152(inputs, blocks=None, include_top=True, classes=1000, *args, **kwar
 
         >>> shape, classes = (224, 224, 3), 1000
 
-        >>> x = keras.layers.Input(shape)
+        >>> x = tensorflow.keras.layers.Input(shape)
 
         >>> model = keras_resnet.models.ResNet152(x, classes=classes)
 
@@ -274,7 +275,7 @@ def ResNet200(inputs, blocks=None, include_top=True, classes=1000, *args, **kwar
 
         >>> shape, classes = (224, 224, 3), 1000
 
-        >>> x = keras.layers.Input(shape)
+        >>> x = tensorflow.keras.layers.Input(shape)
 
         >>> model = keras_resnet.models.ResNet200(x, classes=classes)
 
